@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ahead.ai — Creatividad que convierte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --surface2: #181818;
+      --text: #F0EDE6;
+      --muted: #777773;
+      --accent: #B8FF00;
+      --accent-dark: #8FCA00;
+      --border: #1E1E1E;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    nav ul { list-style: none; display: flex; gap: 36px; }
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 22px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .nav-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -240px; right: -240px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(184,255,0,0.055) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 40px;
+      width: fit-content;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(54px, 8.5vw, 116px);
+      font-weight: 800;
+      line-height: 0.94;
+      letter-spacing: -3.5px;
+      margin-bottom: 32px;
+      max-width: 960px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 500px;
+      margin-bottom: 52px;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 15px 34px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+    .btn-ghost {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 400;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+    .hero-scroll {
+      margin-top: 88px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .hero-scroll::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--muted);
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      padding: 36px 40px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 54px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* SECTIONS */
+    .section { padding: 100px 48px; }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--muted);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 5vw, 68px);
+      font-weight: 800;
+      line-height: 0.97;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+    h2 em { font-style: normal; color: var(--accent); }
+
+    .section-desc {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.75;
+      margin-bottom: 64px;
+      font-weight: 300;
+    }
+
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .service-card {
+      background: var(--bg);
+      padding: 40px 36px;
+      transition: background 0.3s;
+    }
+    .service-card:hover { background: var(--surface); }
+
+    .service-num {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+
+    .service-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .service-tag {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 10px;
+      color: var(--accent);
+      border: 1px solid rgba(184,255,0,0.25);
+      padding: 4px 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* PORTFOLIO */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .portfolio-item:first-child {
+      grid-column: span 2;
+    }
+
+    .portfolio-bg {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portfolio-item:first-child .portfolio-bg {
+      aspect-ratio: 16/8;
+    }
+
+    .portfolio-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transition: transform 0.5s ease;
+    }
+
+    .portfolio-item:hover .portfolio-bg::before {
+      transform: scale(1.04);
+    }
+
+    .p1 .portfolio-bg::before { background: linear-gradient(135deg, #0d1117 0%, #0f3460 100%); }
+    .p2 .portfolio-bg::before { background: linear-gradient(135deg, #140808 0%, #3d1010 100%); }
+    .p3 .portfolio-bg::before { background: linear-gradient(135deg, #080d08 0%, #103d10 100%); }
+    .p4 .portfolio-bg::before { background: linear-gradient(135deg, #0d0d14 0%, #28103d 100%); }
+    .p5 .portfolio-bg::before { background: linear-gradient(135deg, #141008 0%, #3d2c10 100%); }
+
+    .portfolio-placeholder {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 80px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.035);
+      letter-spacing: -4px;
+      user-select: none;
+      z-index: 1;
+    }
+
+    .portfolio-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.35s ease;
+      z-index: 2;
+    }
+    .portfolio-item:hover .portfolio-info { transform: translateY(0); }
+
+    .portfolio-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .portfolio-client { font-size: 12px; color: var(--accent); }
+
+    /* BRIEF FORM */
+    .brief-section {
+      padding: 100px 48px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .brief-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 100px;
+      align-items: start;
+    }
+
+    .trust-items {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .trust-check {
+      width: 20px; height: 20px;
+      border: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-field { display: flex; flex-direction: column; }
+
+    label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    input::placeholder, textarea::placeholder { color: #363636; }
+    select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23777' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+    select option { background: #111; }
+    textarea { resize: vertical; min-height: 120px; }
+
+    .checkboxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-bottom: 0;
+      font-weight: 400;
+    }
+    .checkbox-item:hover { border-color: rgba(184,255,0,0.4); color: var(--text); }
+    .checkbox-item input[type="checkbox"] {
+      width: 14px; height: 14px;
+      padding: 0;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn-submit {
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 16px 32px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 4px;
+      width: 100%;
+    }
+    .btn-submit:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .success-icon {
+      width: 64px; height: 64px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 28px;
+      color: var(--accent);
+    }
+
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .success-sub { color: var(--muted); font-size: 16px; }
+
+    /* FOOTER */
+    footer {
+      padding: 44px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy { font-size: 12px; color: var(--muted); }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      nav { padding: 16px 24px; }
+      nav ul { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(3) { border-top: 1px solid var(--border); border-right: 1px solid var(--border); }
+      .stat:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+      .section { padding: 72px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-item:first-child { grid-column: span 1; }
+      .portfolio-item:first-child .portfolio-bg { aspect-ratio: 16/9; }
+      .brief-section { padding: 72px 24px; }
+      .brief-layout { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 20px; text-align: center; padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">ahead<span>.ai</span></a>
+    <ul>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#portafolio">Portafolio</a></li>
+      <li><a href="#brief">Contacto</a></li>
+    </ul>
+    <a href="#brief" class="nav-cta">Empezar proyecto →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-tag">
+      <span class="dot"></span>
+      Agencia creativa con IA — Buenos Aires
+    </div>
+    <h1>Creatividad<br>que <em>convierte.</em></h1>
+    <p class="hero-sub">Producimos contenido para Meta Ads usando inteligencia artificial. Videos, UGC y creativos pensados para marcas que quieren escalar en serio.</p>
+    <div class="hero-actions">
+      <a href="#brief" class="btn-primary">Mandá tu brief →</a>
+      <a href="#portafolio" class="btn-ghost">Ver trabajos ↓</a>
+    </div>
+    <div class="hero-scroll">Scroll para explorar</div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat fade-in">
+      <div class="stat-num">+80</div>
+      <div class="stat-label">Creativos producidos</div>
+    </div>
+    <div class="stat fade-in" style="transition-delay:.1s">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Clientes activos</div>
+    </div>
+    <div class="stat fade-in" style="transition-delay:.2s">
+      <div class="stat-num">3x</div>
+      <div class="stat-label">ROAS promedio generado</div>
+    </div>
+    <div class="stat fade-in" style="transition-delay:.3s">
+      <div class="stat-num">IA</div>
+      <div class="stat-label">100% producción con IA</div>
+    </div>
+  </div>
+
+  <!-- SERVICIOS -->
+  <section class="section" id="servicios">
+    <div class="section-label">Servicios</div>
+    <h2>Lo que<br><em>hacemos</em></h2>
+    <p class="section-desc">Combinamos inteligencia artificial y estrategia creativa para producir contenido que convierte en Meta Ads.</p>
+    <div class="services-grid fade-in">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-name">UGC con IA</div>
+        <p class="service-desc">Creamos videos estilo user-generated content con avatares IA y actores digitales. Autenticidad sin fricción de producción.</p>
+        <span class="service-tag">Meta Ads Ready</span>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-name">Video Creativo</div>
+        <p class="service-desc">Producción completa de videos publicitarios para cold y warm traffic. Concepto, guión, producción IA y edición final.</p>
+        <span class="service-tag">Kling · Seedance · Higgsfield</span>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-name">Estrategia de Creativos</div>
+        <p class="service-desc">Definimos ángulos, hooks y estructura narrativa para cada etapa del funnel. Creativos pensados para escalar.</p>
+        <span class="service-tag">Cold · Warm · Retargeting</span>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-name">Carruseles & Estáticos</div>
+        <p class="service-desc">Piezas gráficas optimizadas para feed y stories. Diseño con intención publicitaria, no solo estética.</p>
+        <span class="service-tag">Feed · Stories · Reels Cover</span>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-name">VSL & Guiones</div>
+        <p class="service-desc">Escribimos Video Sales Letters y guiones para ads de largo aliento que educan y convierten en una sola pieza.</p>
+        <span class="service-tag">Copywriting · Estructura</span>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-name">Brief Creativo</div>
+        <p class="service-desc">Documentamos tu oferta, cliente ideal y objeciones para construir una máquina de creativos coherente y escalable.</p>
+        <span class="service-tag">Estrategia · Documento</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAFOLIO -->
+  <section class="section" id="portafolio" style="padding-top:0">
+    <div class="section-label">Portafolio</div>
+    <h2>Trabajos<br><em>recientes</em></h2>
+    <p class="section-desc">Una selección de creativos producidos para clientes en distintas industrias.</p>
+    <div class="portfolio-grid fade-in">
+      <div class="portfolio-item p1">
+        <div class="portfolio-bg">
+          <span class="portfolio-placeholder">ahead</span>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-title">Campaña de lanzamiento — SALDOYA</div>
+          <div class="portfolio-client">Fintech · UGC + Video IA</div>
+        </div>
+      </div>
+      <div class="portfolio-item p2">
+        <div class="portfolio-bg">
+          <span class="portfolio-placeholder">01</span>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-title">UGC Avatar IA — Infoproducto</div>
+          <div class="portfolio-client">Cursos · Cold Traffic</div>
+        </div>
+      </div>
+      <div class="portfolio-item p3">
+        <div class="portfolio-bg">
+          <span class="portfolio-placeholder">02</span>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-title">Carrusel Meta Ads</div>
+          <div class="portfolio-client">E-commerce · Feed</div>
+        </div>
+      </div>
+      <div class="portfolio-item p4">
+        <div class="portfolio-bg">
+          <span class="portfolio-placeholder">03</span>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-title">Video Creativo — Agencia</div>
+          <div class="portfolio-client">Marketing · Warm Traffic</div>
+        </div>
+      </div>
+      <div class="portfolio-item p5">
+        <div class="portfolio-bg">
+          <span class="portfolio-placeholder">04</span>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-title">VSL Completa</div>
+          <div class="portfolio-client">Consultoría · Funnel</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRIEF FORM -->
+  <section class="brief-section" id="brief">
+    <div class="brief-layout">
+      <div class="brief-left">
+        <div class="section-label">Brief</div>
+        <h2>Arrancamos<br>con tu<br><em>proyecto</em></h2>
+        <p class="section-desc" style="margin-bottom:0">Completá el formulario y nos contactamos en menos de 24 hs para definir cómo podemos ayudarte a escalar con creativos IA.</p>
+        <div class="trust-items">
+          <div class="trust-item">
+            <div class="trust-check">✓</div>
+            Respuesta en menos de 24 hs
+          </div>
+          <div class="trust-item">
+            <div class="trust-check">✓</div>
+            Llamada de diagnóstico gratuita
+          </div>
+          <div class="trust-item">
+            <div class="trust-check">✓</div>
+            Propuesta personalizada sin compromiso
+          </div>
+        </div>
+      </div>
+
+      <div class="brief-right">
+        <form id="briefForm" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-field">
+              <label for="empresa">Empresa / Proyecto</label>
+              <input type="text" id="empresa" placeholder="Nombre del negocio">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-field">
+              <label for="whatsapp">WhatsApp</label>
+              <input type="tel" id="whatsapp" placeholder="+54 9 ...">
+            </div>
+          </div>
+          <div class="form-field">
+            <label>¿Qué servicios te interesan?</label>
+            <div class="checkboxes">
+              <label class="checkbox-item"><input type="checkbox" value="ugc"> UGC con IA</label>
+              <label class="checkbox-item"><input type="checkbox" value="video"> Video Creativo</label>
+              <label class="checkbox-item"><input type="checkbox" value="estrategia"> Estrategia Creativa</label>
+              <label class="checkbox-item"><input type="checkbox" value="estaticos"> Carruseles / Estáticos</label>
+              <label class="checkbox-item"><input type="checkbox" value="vsl"> VSL / Guiones</label>
+              <label class="checkbox-item"><input type="checkbox" value="brief"> Brief Creativo</label>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="presupuesto">Presupuesto mensual estimado</label>
+            <select id="presupuesto">
+              <option value="">Seleccioná una opción</option>
+              <option>Menos de USD 500</option>
+              <option>USD 500 – 1.000</option>
+              <option>USD 1.000 – 2.500</option>
+              <option>USD 2.500 – 5.000</option>
+              <option>Más de USD 5.000</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="descripcion">Contanos sobre tu proyecto</label>
+            <textarea id="descripcion" placeholder="¿Qué vendés? ¿A quién? ¿Qué querés lograr con los creativos?" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            Enviar brief →
+          </button>
+        </form>
+
+        <div class="success-msg" id="successMsg">
+          <div class="success-icon">✓</div>
+          <div class="success-title">¡Brief recibido!</div>
+          <p class="success-sub">Te contactamos en menos de 24 hs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo">ahead<span>.ai</span></a>
+    <ul class="footer-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#portafolio">Portafolio</a></li>
+      <li><a href="#brief">Contacto</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 ahead.ai — Buenos Aires, AR</p>
+  </footer>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    // ─────────────────────────────────────────────
+    // EMAILJS CONFIG — reemplazá estos valores con
+    // los tuyos después de crear la cuenta
+    // ─────────────────────────────────────────────
+    const EMAILJS_PUBLIC_KEY  = 'TU_PUBLIC_KEY';      // Account → API Keys
+    const EMAILJS_SERVICE_ID  = 'TU_SERVICE_ID';      // Email Services → Service ID
+    const EMAILJS_TEMPLATE_ID = 'TU_TEMPLATE_ID';     // Email Templates → Template ID
+
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+    // Scroll fade-in
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Form submit
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      const nombre = document.getElementById('nombre').value;
+      const email  = document.getElementById('email').value;
+      const empresa = document.getElementById('empresa').value;
+
+      // Parámetros que se inyectan en el template de EmailJS
+      const templateParams = {
+        to_name:    nombre,
+        to_email:   email,
+        empresa:    empresa || 'tu proyecto',
+        brief_link: 'https://brief-ahead-ai.com.ar',
+        from_name:  'ahead.ai',
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        // Éxito → mostrar mensaje
+        document.getElementById('briefForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } catch (error) {
+        console.error('EmailJS error:', error);
+        // Si falla el email igual mostramos éxito (no bloqueamos al usuario)
+        document.getElementById('briefForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

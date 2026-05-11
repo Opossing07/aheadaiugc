@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AheadAI — Videos UGC con IA para Meta Ads</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #161616;
+      --text: #f0ede6;
+      --muted: #666662;
+      --accent: #c8f55a;
+      --accent-dark: #9ec43a;
+      --border: #1c1c1c;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV PILL ─── */
+    .nav-wrap {
+      position: fixed;
+      top: 20px; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      padding: 14px 24px;
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+    .nav-logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 28px; }
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--accent-dark); transform: scale(1.03); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(200,245,90,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(200,245,90,0.08);
+      border: 1px solid rgba(200,245,90,0.2);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 28px;
+      letter-spacing: 0.5px;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .hero-sub {
+      max-width: 520px;
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 24px auto 40px;
+      font-weight: 300;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 60px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-dark); transform: scale(1.03); }
+    .btn-ghost {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    /* VIDEO EMBED */
+    .hero-video {
+      width: 100%;
+      max-width: 780px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,245,90,0.03) 0%, transparent 60%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .play-btn {
+      width: 64px; height: 64px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .play-btn:hover { transform: scale(1.1); background: var(--accent-dark); }
+    .play-btn svg { margin-left: 4px; }
+    .video-label {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .video-label span { color: var(--accent); }
+    .hero-proof {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .hero-proof strong { color: var(--text); }
+
+    /* ─── GALLERY ─── */
+    .gallery-section {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      text-align: center;
+      margin-bottom: 48px;
+      line-height: 1.05;
+    }
+    .section-title em { font-style: normal; color: var(--accent); }
+
+    .gallery-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .gallery-item {
+      aspect-ratio: 9/16;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .gallery-item:hover { transform: scale(1.03); border-color: rgba(200,245,90,0.3); }
+    .gallery-item .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .gallery-item:hover .play-overlay { opacity: 1; }
+    .play-small {
+      width: 36px; height: 36px;
+      background: rgba(200,245,90,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* fake video thumbnails with gradient fills */
+    .gi-1 { background: linear-gradient(160deg, #1a2a1a 0%, #0e1a0e 100%); }
+    .gi-2 { background: linear-gradient(160deg, #2a1a1a 0%, #1a0e0e 100%); }
+    .gi-3 { background: linear-gradient(160deg, #1a1a2a 0%, #0e0e1a 100%); }
+    .gi-4 { background: linear-gradient(160deg, #2a2a1a 0%, #1a1a0e 100%); }
+    .gi-5 { background: linear-gradient(160deg, #1a2a2a 0%, #0e1a1a 100%); }
+    .gi-6 { background: linear-gradient(160deg, #2a1a2a 0%, #1a0e1a 100%); }
+    .gi-7 { background: linear-gradient(160deg, #1f2a1a 0%, #131a0e 100%); }
+    .gi-8 { background: linear-gradient(160deg, #2a1f1a 0%, #1a130e 100%); }
+    .gi-9 { background: linear-gradient(160deg, #1a1f2a 0%, #0e131a 100%); }
+    .gi-10 { background: linear-gradient(160deg, #2a1a1f 0%, #1a0e13 100%); }
+    .gi-11 { background: linear-gradient(160deg, #1f1a2a 0%, #130e1a 100%); }
+    .gi-12 { background: linear-gradient(160deg, #2a1f1f 0%, #1a1313 100%); }
+    .gi-label {
+      position: absolute;
+      bottom: 8px; left: 8px; right: 8px;
+      font-size: 10px;
+      color: rgba(240,237,230,0.7);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .gi-tag {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: rgba(200,245,90,0.15);
+      border: 1px solid rgba(200,245,90,0.3);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 9px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .gallery-cta-wrap {
+      text-align: center;
+    }
+    .btn-outline {
+      display: inline-block;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── LOGOS ─── */
+    .logos-section {
+      padding: 40px 24px 60px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .logos-label {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .logos-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .logo-item {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: rgba(240,237,230,0.25);
+      letter-spacing: -0.5px;
+      transition: color 0.2s;
+    }
+    .logo-item:hover { color: rgba(240,237,230,0.5); }
+
+    /* ─── PROCESS ─── */
+    .process-section {
+      padding: 100px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .process-intro {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .process-intro p {
+      color: var(--muted);
+      max-width: 460px;
+      margin: 16px auto 0;
+      font-size: 16px;
+    }
+    .process-timeline {
+      position: relative;
+    }
+    .process-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
+      transform: translateX(-50%);
+    }
+    .process-step {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      align-items: center;
+      margin-bottom: 56px;
+      position: relative;
+    }
+    .step-left {
+      text-align: right;
+      padding-right: 40px;
+    }
+    .step-right {
+      text-align: left;
+      padding-left: 40px;
+    }
+    .step-empty { /* placeholder for zigzag */ }
+    .step-content {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .step-content.visible { opacity: 1; transform: none; }
+    .step-day {
+      display: inline-block;
+      background: rgba(200,245,90,0.1);
+      border: 1px solid rgba(200,245,90,0.2);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .step-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .step-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .step-node {
+      width: 44px; height: 44px;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .step-node.active {
+      border-color: var(--accent);
+      background: rgba(200,245,90,0.1);
+    }
+    .step-node svg { width: 18px; height: 18px; }
+
+    /* ─── COMPARISON ─── */
+    .compare-section {
+      padding: 100px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .compare-intro { text-align: center; margin-bottom: 48px; }
+    .compare-intro p { color: var(--muted); margin-top: 12px; font-size: 16px; }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .compare-table th {
+      padding: 20px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: left;
+      letter-spacing: 0.5px;
+    }
+    .compare-table th:first-child {
+      background: var(--surface);
+      color: var(--muted);
+      width: 30%;
+    }
+    .compare-table th.col-old {
+      background: var(--surface);
+      color: var(--muted);
+      text-align: center;
+    }
+    .compare-table th.col-new {
+      background: rgba(200,245,90,0.08);
+      color: var(--accent);
+      text-align: center;
+      border-left: 1px solid rgba(200,245,90,0.2);
+    }
+    .compare-table td {
+      padding: 16px 24px;
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .compare-table td:first-child {
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .compare-table td.old {
+      background: var(--surface);
+      color: rgba(240,237,230,0.4);
+      text-align: center;
+    }
+    .compare-table td.new {
+      background: rgba(200,245,90,0.04);
+      color: var(--text);
+      text-align: center;
+      font-weight: 500;
+      border-left: 1px solid rgba(200,245,90,0.15);
+    }
+    .check { color: var(--accent); font-weight: 700; }
+    .cross { color: #666; }
+    .warn { color: #f5a623; font-size: 12px; }
+
+    /* ─── PRICING ─── */
+    .pricing-section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .pricing-intro { text-align: center; margin-bottom: 16px; }
+    .pricing-intro p { color: var(--muted); margin-top: 12px; font-size: 16px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .pricing-badge {
+      display: inline-block;
+      background: rgba(200,245,90,0.1);
+      border: 1px solid rgba(200,245,90,0.25);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .price-card:hover { transform: translateY(-4px); border-color: #333; }
+    .price-card.featured {
+      border-color: rgba(200,245,90,0.4);
+      background: linear-gradient(160deg, rgba(200,245,90,0.06) 0%, var(--surface) 60%);
+    }
+    .price-card.featured:hover { border-color: var(--accent); }
+    .popular-tag {
+      position: absolute;
+      top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent);
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .plan-name {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 52px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .plan-price sup { font-size: 22px; vertical-align: super; letter-spacing: 0; }
+    .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .plan-total { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
+    .plan-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+    .plan-features { list-style: none; margin-bottom: 32px; }
+    .plan-features li {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 7px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .plan-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .plan-features li.highlight { color: var(--text); }
+    .plan-cta {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 13px 24px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .plan-cta.primary {
+      background: var(--accent);
+      color: #000;
+    }
+    .plan-cta.primary:hover { background: var(--accent-dark); transform: scale(1.02); }
+    .plan-cta.secondary {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .plan-cta.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── FAQ ─── */
+    .faq-section {
+      padding: 80px 24px 100px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .faq-intro { text-align: center; margin-bottom: 48px; }
+    .faq-item {
+      border-top: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 500;
+      text-align: left;
+      padding: 22px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq-q:hover { color: var(--accent); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--muted);
+      transition: transform 0.3s, border-color 0.2s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .faq-item.open .faq-a { max-height: 200px; }
+    .faq-a p {
+      padding-bottom: 22px;
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ─── FINAL CTA ─── */
+    .final-cta {
+      padding: 100px 24px;
+      text-align: center;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .final-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .final-cta h2 em { font-style: normal; color: var(--accent); }
+    .final-cta p {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 460px;
+      margin: 0 auto 36px;
+    }
+    .final-proof {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ─── RESPONSIVE ─── */
+
+    /* ─── CREATIVES SECTION ─── */
+    .creatives-section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .creatives-intro { text-align: center; margin-bottom: 56px; }
+    .creatives-sub { color: var(--muted); font-size: 16px; margin-top: 12px; }
+    .creatives-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .creative-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .creative-card:hover { border-color: rgba(200,245,90,0.25); transform: translateY(-3px); }
+    .creative-preview {
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ugc-preview { background: linear-gradient(135deg, #0d1a0d 0%, #111 100%); }
+    .lifestyle-preview { background: linear-gradient(135deg, #0d120d 0%, #0a0f0a 100%); }
+    .compare-preview { background: linear-gradient(135deg, #0d0d18 0%, #080810 100%); }
+
+    /* Mock phone for UGC */
+    .mock-phone {
+      width: 90px;
+      height: 160px;
+      background: #1a1a1a;
+      border: 2px solid #333;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .mock-screen {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #1a2a1a 0%, #0e1a0e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 8px 6px;
+      gap: 4px;
+      position: relative;
+    }
+    .mock-avatar {
+      position: absolute;
+      top: 10px; left: 50%;
+      transform: translateX(-50%);
+      width: 44px; height: 60px;
+      background: linear-gradient(160deg, #3a4a3a, #2a3a2a);
+      border-radius: 6px;
+    }
+    .mock-tag {
+      position: absolute;
+      top: 8px; left: 6px;
+      background: rgba(200,245,90,0.2);
+      color: var(--accent);
+      font-size: 7px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    .mock-speech {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      width: 100%;
+      margin-top: auto;
+    }
+    .mock-caption { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+    .mock-line {
+      height: 4px;
+      background: rgba(240,237,230,0.15);
+      border-radius: 2px;
+    }
+    .mock-line.bright { background: rgba(240,237,230,0.4); }
+    .mock-line.accent-line { background: rgba(200,245,90,0.5); }
+    .mock-line.w100 { width: 100%; }
+    .mock-line.w80 { width: 80%; }
+    .mock-line.w70 { width: 70%; }
+    .mock-line.w60 { width: 60%; }
+    .mock-line.w50 { width: 50%; }
+
+    /* Mock static lifestyle */
+    .mock-static {
+      width: 160px;
+      height: 140px;
+      border-radius: 10px;
+      position: relative;
+      overflow: visible;
+    }
+    .mock-static.lifestyle {
+      background: linear-gradient(135deg, #1a2a1a 0%, #0e180e 100%);
+      border: 1px solid rgba(200,245,90,0.1);
+    }
+    .mock-person {
+      position: absolute;
+      right: 10px; bottom: 0;
+      width: 55px; height: 110px;
+      background: linear-gradient(160deg, #3a4a3a, #2a3a2a);
+      border-radius: 8px 8px 0 0;
+    }
+    .benefit-pill {
+      position: absolute;
+      background: rgba(240,237,230,0.92);
+      color: #000;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .benefit-pill.p1 { top: 18px; left: 4px; }
+    .benefit-pill.p2 { top: 52px; left: 0px; }
+    .benefit-pill.p3 { top: 86px; left: 4px; }
+    .mock-headline {
+      position: absolute;
+      top: 14px;
+      left: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Mock compare */
+    .mock-static.compare {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 180px;
+    }
+    .compare-title-mock {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .compare-title-mock .us { color: var(--accent); }
+    .compare-title-mock .them { color: var(--muted); }
+    .compare-title-mock em { font-style: normal; color: var(--muted); }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 28px 28px;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 6px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 5px;
+    }
+    .compare-feat { font-size: 8px; color: var(--muted); }
+    .compare-val {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      margin: 0 auto;
+    }
+    .compare-val.yes { background: rgba(200,245,90,0.15); color: var(--accent); }
+    .compare-val.no { background: rgba(255,80,80,0.1); color: #ff5050; }
+
+    .creative-info { padding: 20px; }
+    .creative-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+    .creative-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .creative-formats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .creative-formats span {
+      background: rgba(200,245,90,0.08);
+      border: 1px solid rgba(200,245,90,0.15);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 900px) {
+      .creatives-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+    }
+
+    @media (max-width: 900px) {
+      nav ul { display: none; }
+      nav { gap: 20px; }
+      .gallery-grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+      .process-timeline::before { left: 30px; }
+      .process-step { grid-template-columns: 60px 1fr; }
+      .step-left { text-align: left; padding-right: 0; padding-left: 20px; grid-column: 2; }
+      .step-right { text-align: left; padding-left: 20px; grid-column: 2; }
+      .step-node { margin: 0; }
+      .compare-table { font-size: 13px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px; }
+    }
+    @media (max-width: 600px) {
+
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV PILL -->
+  <div class="nav-wrap">
+    <nav>
+      <a href="#" class="nav-logo">Ahead<span>AI</span></a>
+      <ul>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#proceso">Cómo funciona</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="./Brief_V2.html" class="nav-cta">Empezar →</a>
+    </nav>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Agencia UGC con IA · Buenos Aires
+    </div>
+    <h1>SI TU PRODUCTO<br>VENDE ONLINE,<br><em>MERECE ATENCIÓN.</em></h1>
+    <p class="hero-sub">
+      Producimos <strong>videos UGC hiperrealistas con IA</strong> para que tus Meta Ads conviertan más.
+      De 5 a 50 creativos en 5 a 9 días hábiles.
+    </p>
+    <div class="hero-actions">
+      <a href="./Brief_V2.html" class="btn-primary">Mandá tu brief →</a>
+      <a href="#resultados" class="btn-ghost">Ver ejemplos ↓</a>
+    </div>
+
+    <p class="hero-proof">+125 marcas ya aceleraron sus campañas con <strong>AheadAI</strong></p>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section" id="resultados">
+    <div class="section-eyebrow">Nuestros resultados</div>
+    <div class="section-title">Videos que <em>convierten.</em></div>
+
+    <div class="gallery-grid-4">
+      <div class="gallery-item gi-1">
+        <div class="gi-tag">UGC</div>
+        <div class="play-overlay"><div class="play-small"><svg width="12" height="14" viewBox="0 0 12 14" fill="none"><polygon points="1,1 11,7 1,13" fill="#000"/></svg></div></div>
+        <div class="gi-label">Testimonio · Skincare</div>
+      </div>
+      <div class="gallery-item gi-3">
+        <div class="gi-tag">Unboxing</div>
+        <div class="play-overlay"><div class="play-small"><svg width="12" height="14" viewBox="0 0 12 14" fill="none"><polygon points="1,1 11,7 1,13" fill="#000"/></svg></div></div>
+        <div class="gi-label">Unboxing · Ecom</div>
+      </div>
+      <div class="gallery-item gi-6">
+        <div class="gi-tag">Review</div>
+        <div class="play-overlay"><div class="play-small"><svg width="12" height="14" viewBox="0 0 12 14" fill="none"><polygon points="1,1 11,7 1,13" fill="#000"/></svg></div></div>
+        <div class="gi-label">Review · Fintech</div>
+      </div>
+      <div class="gallery-item gi-9">
+        <div class="gi-tag">ASMR</div>
+        <div class="play-overlay"><div class="play-small"><svg width="12" height="14" viewBox="0 0 12 14" fill="none"><polygon points="1,1 11,7 1,13" fill="#000"/></svg></div></div>
+        <div class="gi-label">ASMR Unboxing · Gift</div>
+      </div>
+    </div>
+
+    <div class="gallery-cta-wrap">
+      <a href="./Brief_V2.html" class="btn-outline">Ver más videos →</a>
+    </div>
+  </section>
+
+  <!-- LOGOS -->
+  <div class="logos-section">
+    <p class="logos-label">Algunos de nuestros clientes</p>
+    <div class="logos-strip">
+      <span class="logo-item">SALDOYA</span>
+      <span class="logo-item">FINDEX</span>
+      <span class="logo-item">VITAL HONEY</span>
+      <span class="logo-item">CYNETIC</span>
+      <span class="logo-item">ATELIER INK</span>
+      <span class="logo-item">MORETTI</span>
+    </div>
+  </div>
+
+  <!-- PROCESO -->
+  <section class="process-section" id="proceso">
+    <div class="process-intro">
+      <div class="section-eyebrow">Cómo funciona</div>
+      <div class="section-title">Tu fábrica de creativos<br><em>en piloto automático.</em></div>
+      <p>De la idea al anuncio en tiempo récord. Vos solo aprobás.</p>
+    </div>
+
+    <div class="process-timeline">
+
+      <div class="process-step">
+        <div class="step-left">
+          <div class="step-content">
+            <div class="step-day">Día 1</div>
+            <div class="step-name">Completás el brief</div>
+            <div class="step-desc">Nos contás sobre tu producto, audiencia y objetivos en un formulario simple.</div>
+          </div>
+        </div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="step-empty"></div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-empty"></div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="step-right">
+          <div class="step-content">
+            <div class="step-day">Día 1</div>
+            <div class="step-name">Subís tus fotos</div>
+            <div class="step-desc">Cargás imágenes del producto o nos enviás el link de tu tienda. Nada más.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-left">
+          <div class="step-content">
+            <div class="step-day">Minutos después</div>
+            <div class="step-name">Creamos los guiones</div>
+            <div class="step-desc">Generamos los guiones optimizados para Meta Ads. Listos para revisar en la plataforma.</div>
+          </div>
+        </div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="step-empty"></div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-empty"></div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="step-right">
+          <div class="step-content">
+            <div class="step-day">Día 1</div>
+            <div class="step-name">Aprobás guiones</div>
+            <div class="step-desc">Revisás y aprobás los guiones. Podés pedir ajustes antes de producir.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-left">
+          <div class="step-content">
+            <div class="step-day">Días 3 – 6</div>
+            <div class="step-name">Producción con IA</div>
+            <div class="step-desc">Generamos los videos con avatares hiperrealistas. Voiceover en español rioplatense con ElevenLabs.</div>
+          </div>
+        </div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <div class="step-empty"></div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-empty"></div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="step-right">
+          <div class="step-content">
+            <div class="step-day">Días 7 – 8</div>
+            <div class="step-name">Edición y subtítulos</div>
+            <div class="step-desc">Editamos cada video, agregamos cortes, subtítulos quemados y ganchos visuales.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-left">
+          <div class="step-content">
+            <div class="step-day">Días 8 – 9</div>
+            <div class="step-name">Entrega final</div>
+            <div class="step-desc">Recibís todos los videos en 1080p 9:16 listos para subir a Meta Ads. Via Google Drive.</div>
+          </div>
+        </div>
+        <div class="step-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c8f55a" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="step-empty"></div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top: 56px;">
+      <a href="./Brief_V2.html" class="btn-primary">Empezar ahora →</a>
+    </div>
+  </section>
+
+  <!-- COMPARATIVA -->
+  <section class="compare-section">
+    <div class="compare-intro">
+      <div class="section-eyebrow">Por qué AheadAI</div>
+      <div class="section-title">Compará las<br><em>alternativas.</em></div>
+      <p>Decidí con datos, no con suposiciones.</p>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-old">UGC Tradicional</th>
+          <th class="col-new">AheadAI ✦</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Costo por video</td>
+          <td class="old">$80 – $900 USD</td>
+          <td class="new"><span class="check">$29 – $50 USD</span></td>
+        </tr>
+        <tr>
+          <td>Tiempo de entrega</td>
+          <td class="old">2 – 3 semanas</td>
+          <td class="new"><span class="check">5 – 9 días hábiles</span></td>
+        </tr>
+        <tr>
+          <td>Escalabilidad</td>
+          <td class="old"><span class="warn">⚠ Inconsistente</span></td>
+          <td class="new"><span class="check">5 – 50 videos/pedido</span></td>
+        </tr>
+        <tr>
+          <td>Guiones incluidos</td>
+          <td class="old"><span class="cross">✗ No incluidos</span></td>
+          <td class="new"><span class="check">✓ Siempre incluidos</span></td>
+        </tr>
+        <tr>
+          <td>Consistencia de marca</td>
+          <td class="old"><span class="cross">Variable</span></td>
+          <td class="new"><span class="check">✓ Controlada</span></td>
+        </tr>
+        <tr>
+          <td>Edición incluida</td>
+          <td class="old"><span class="cross">✗ Costo extra</span></td>
+          <td class="new"><span class="check">✓ Siempre incluida</span></td>
+        </tr>
+        <tr>
+          <td>Soporte directo</td>
+          <td class="old"><span class="cross">✗</span></td>
+          <td class="new"><span class="check">✓ Antes de pagar</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- TIPOS DE CREATIVOS -->
+  <section class="creatives-section" id="creativos">
+    <div class="creatives-intro">
+      <div class="section-eyebrow">Qué producimos</div>
+      <div class="section-title">Tres tipos de creativos<br>que <em>convierten.</em></div>
+      <p class="creatives-sub">Videos UGC + estáticos diseñados para Meta Ads. Todo en un solo pack.</p>
+    </div>
+
+    <div class="creatives-grid">
+
+      <div class="creative-card">
+        <div class="creative-preview ugc-preview">
+          <div class="mock-phone">
+            <div class="mock-screen">
+              <div class="mock-avatar"></div>
+              <div class="mock-speech">
+                <div class="mock-line w80"></div>
+                <div class="mock-line w60"></div>
+              </div>
+              <div class="mock-tag">UGC</div>
+              <div class="mock-caption">
+                <div class="mock-line w100"></div>
+                <div class="mock-line w70"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="creative-info">
+          <div class="creative-name">Video UGC</div>
+          <div class="creative-desc">Avatar hiperrealista habla directo a cámara. Testimonio, review, unboxing, GRWM. 13–18 seg, 9:16, 1080p.</div>
+          <div class="creative-formats">
+            <span>Testimonio</span><span>Review</span><span>Unboxing</span><span>GRWM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-preview lifestyle-preview">
+          <div class="mock-static lifestyle">
+            <div class="mock-person"></div>
+            <div class="benefit-pill p1">✓ Beneficio 1</div>
+            <div class="benefit-pill p2">✓ Beneficio 2</div>
+            <div class="benefit-pill p3">✓ Beneficio 3</div>
+            <div class="mock-headline">
+              <div class="mock-line w70 bright"></div>
+              <div class="mock-line w50 accent-line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="creative-info">
+          <div class="creative-name">Estático Lifestyle</div>
+          <div class="creative-desc">Persona con tu producto + chips flotantes marcando cada beneficio. Perfecto para cold traffic.</div>
+          <div class="creative-formats">
+            <span>1:1 Feed</span><span>4:5 Feed</span><span>9:16 Story</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-preview compare-preview">
+          <div class="mock-static compare">
+            <div class="compare-title-mock">
+              <span class="us">NOSOTROS</span> <em>vs</em> <span class="them">ELLOS</span>
+            </div>
+            <div class="compare-row">
+              <div class="compare-feat">Resultado rápido</div>
+              <div class="compare-val yes">✓</div>
+              <div class="compare-val no">✗</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-feat">Sin efectos</div>
+              <div class="compare-val yes">✓</div>
+              <div class="compare-val no">✗</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-feat">Garantía</div>
+              <div class="compare-val yes">✓</div>
+              <div class="compare-val no">✗</div>
+            </div>
+          </div>
+        </div>
+        <div class="creative-info">
+          <div class="creative-name">Comparativa US vs THEM</div>
+          <div class="creative-desc">Tabla visual que muestra tus ventajas vs la competencia. El formato con mayor CTR en Meta Ads.</div>
+          <div class="creative-formats">
+            <span>1:1 Feed</span><span>4:5 Feed</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRECIOS -->
+  <section class="pricing-section" id="precios">
+    <div class="pricing-intro">
+      <div class="pricing-badge">⚡ Precios de lanzamiento · Tiempo limitado</div>
+      <div class="section-title">Planes simples<br>y <em>transparentes.</em></div>
+      <p>Videos UGC + estáticos + guiones + edición. Todo incluido. Sin sorpresas.</p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><sup>USD</sup>49</div>
+        <div class="plan-period">pago único</div>
+        <div class="plan-total">5 videos + 5 estáticos + 1 carrusel</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li class="highlight">5 videos UGC hiperrealistas</li>
+          <li class="highlight">5 estáticos (lifestyle, comparativa o callout)</li>
+          <li class="highlight">1 carrusel de 3 slides</li>
+          <li>Guiones incluidos</li>
+          <li>Edición + subtítulos quemados</li>
+          <li>Formato 9:16 1080p · 13–18 seg</li>
+          <li>Entrega en 5–9 días hábiles</li>
+        </ul>
+        <a href="./Brief_V2.html" class="plan-cta secondary">Empezar ahora</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="popular-tag">⭐ Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>USD</sup>149</div>
+        <div class="plan-period">pago único</div>
+        <div class="plan-total">10 videos + 6 estáticos + 1 carrusel</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li class="highlight">10 videos UGC hiperrealistas</li>
+          <li class="highlight">6 estáticos (todos los formatos)</li>
+          <li class="highlight">1 carrusel de 3 slides</li>
+          <li>Guiones + edición + subtítulos</li>
+          <li>5 ángulos para matriz de testing</li>
+          <li>Soporte directo por WhatsApp</li>
+          <li>Entrega prioritaria 5–7 días</li>
+        </ul>
+        <a href="./Brief_V2.html" class="plan-cta primary">Armar mi pack →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="plan-name">Domination</div>
+        <div class="plan-price"><sup>USD</sup>249</div>
+        <div class="plan-period">pago único</div>
+        <div class="plan-total">20 videos + 12 estáticos + 3 carruseles</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li class="highlight">20 videos UGC hiperrealistas</li>
+          <li class="highlight">12 estáticos (todos los formatos)</li>
+          <li class="highlight">3 carruseles de 3 slides</li>
+          <li>Guiones + edición + subtítulos</li>
+          <li>Entrega prioritaria</li>
+          <li>Soporte directo por WhatsApp</li>
+          <li class="highlight">Ideal para escalar en Meta</li>
+        </ul>
+        <a href="./Brief_V2.html" class="plan-cta secondary">Dominar mercado →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section" id="faq">
+    <div class="faq-intro">
+      <div class="section-eyebrow">FAQ</div>
+      <div class="section-title">Preguntas<br><em>frecuentes.</em></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cómo sé si los videos van a quedar bien para mi producto?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Podés ver ejemplos reales de nuestros trabajos en la galería de esta página. Si querés algo más específico para tu rubro, escribinos por WhatsApp y te mostramos casos similares al tuyo.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué necesito para empezar?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Solo necesitás completar el brief con la info de tu producto y subir algunas fotos. Nosotros nos encargamos de todo lo demás: guiones, producción, edición y entrega.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Los videos parecen reales o se nota que son con IA?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Usamos los modelos más avanzados del mercado (Higgsfield, Seedance 2.0, Kling 3.0) para generar avatares hiperrealistas. La gran mayoría de nuestros clientes confirman que sus seguidores no detectan que son con IA.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuánto tiempo tarda la entrega?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>5 a 9 días hábiles desde que aprobás los guiones. El proceso completo incluye brief, guiones, producción, edición y correcciones finales.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo pedir correcciones?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Sí. En el plan Scaling incluimos hasta 3 generaciones por video para que el resultado sea exactamente lo que buscás. Además el segundo pago se hace contra aprobación del primer video.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿En qué formato entregás los videos?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Formato 9:16 vertical, 1080p Full HD, duración de 13 a 18 segundos. Optimizados para Meta Ads (Facebook e Instagram). La entrega es vía link de Google Drive.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <h2>Tus próximos creativos,<br><em>listos en 9 días.</em></h2>
+    <p>Producimos tus creativos UGC con IA. Mandá tu brief y arrancamos.</p>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+      <a href="./Brief_V2.html" class="btn-primary" style="font-size:16px; padding:16px 40px;" target="_blank">Mandá tu brief →</a>
+      <p class="final-proof">50% al inicio · 50% contra entrega final</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo">Ahead<span>AI</span></a>
+    <div class="footer-links">
+      <a href="#resultados">Resultados</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#precios">Precios</a>
+      <a href="./Brief_V2.html" target="_blank">Brief</a>
+    </div>
+    <p class="footer-copy">© 2026 AheadAI · Buenos Aires</p>
+  </footer>
+
+  <script>
+    // FAQ toggle
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      item.classList.toggle('open');
+    }
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // also animate step-content inside
+          e.target.querySelectorAll && e.target.querySelectorAll('.step-content').forEach(s => s.classList.add('visible'));
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.step-content').forEach(el => observer.observe(el));
+
+    // Activate step nodes on scroll
+    const nodeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('active');
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.step-node').forEach(el => nodeObserver.observe(el));
+  </script>
+
+</body>
+</html>
